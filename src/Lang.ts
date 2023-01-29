@@ -27,6 +27,8 @@ export class Localization {
         ['online_notify_add_hint', '将此ID的玩家添加到通知列表里。'],
         ['online_notify_remove_hint', '移除此玩家。'],
         ['online_notify_cant_find', '没有与此ID的玩家建立关系。'],
+        ['chat_notify_popup_title', '聊天消息'],
+        ['online_notify_popup_title', '上线消息'],
     ]);
 
     private static ENTextMap = new Map<string, string>([
@@ -57,6 +59,8 @@ export class Localization {
         ['online_notify_add_hint', 'Add player with this member number to the notify list.'],
         ['online_notify_remove_hint', 'Remove this player.'],
         ['online_notify_cant_find', 'No relationship found with this player.'],
+        ['chat_notify_popup_title', 'Chat Message'],
+        ['online_notify_popup_title', 'Online Message'],
     ]);
 
     static GetText(srcTag: string, fill: any = {}) {

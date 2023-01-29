@@ -14,8 +14,17 @@ export class MentionNotification {
             if (C.ID !== 0
                 && data.setting.AlertType !== 0
                 && !(document.hasFocus() && ElementIsScrolledToEnd("TextAreaChatLog")))
-                NotificationRaise(MentionNotification.EventType, { body: content });
+                NotificationRaise(MentionNotification.EventType, {
+                    body: content, character: C, useCharAsIcon: true
+                });
         }
+
+        mod.hookFunction('DialogFindPlayer', 0, (args, next) => {
+            if (args[0] === `NotificationTitle${this.EventType}`) {
+                return Localization.GetText('chat_notify_popup_title')
+            }
+            return next(args);
+        });
 
         mod.hookFunction('ChatRoomMessage', 9, (args, next) => {
             next(args);

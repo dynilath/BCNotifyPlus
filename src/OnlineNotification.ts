@@ -15,11 +15,11 @@ export class OnlineNotification {
     static init(mod: ModSDKModAPI, monitor: Monitor) {
         this.justLoaded = true;
 
-        const raiseNotify = (name: string, id: string) => {
+        const raiseNotify = (name: string, id: number) => {
             const data = DataManager.instance.data.onlineNotify;
-            const content = Localization.GetText("notify_friend_online", { CHARANAME: name, CHARANUM: id });
+            const content = Localization.GetText("notify_friend_online", { CHARANAME: name, CHARANUM: `${id}` });
             if (data.setting.AlertType !== 0) {
-                NotificationRaise(OnlineNotification.EventType, { body: content });
+                NotificationRaise(OnlineNotification.EventType, { body: content, memberNumber: id, characterName: name });
             }
             if (data.chatMsg) ChatRoomLocalAction(content);
         }
@@ -27,6 +27,13 @@ export class OnlineNotification {
         monitor.AddIntervalEvent(20000, (player) => {
             ServerSend("AccountQuery", { Query: "OnlineFriends" });
         })
+
+        mod.hookFunction('DialogFindPlayer', 0, (args, next) => {
+            if (args[0] === `NotificationTitle${this.EventType}`) {
+                return Localization.GetText('online_notify_popup_title')
+            }
+            return next(args);
+        });
 
         mod.hookFunction('ServerAccountQueryResult', 0, (args, next) => {
             next(args);
@@ -70,7 +77,7 @@ export class OnlineNotification {
                         return false;
                     })();
 
-                    if (doNotify) raiseNotify(c.MemberName, "" + c.MemberNumber);
+                    if (doNotify) raiseNotify(c.MemberName, c.MemberNumber);
                 })
             }
 
