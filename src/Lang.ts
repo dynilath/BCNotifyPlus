@@ -2,6 +2,7 @@ export class Localization {
     private static CNTextMap = new Map<string, string>([
         ['notify_plus_setting_button_hint', 'Notify Plus 设置'],
         ["notify_friend_online", "[NotifyPlus] CHARANAME(CHARANUM)上线了。"],
+        ['notify_friend_offline', '[NotifyPlus] CHARANAME(CHARANUM)下线了。'],
         ['notify_plus_setting', '- Notify Plus 设置 -'],
         ['button_mention_notify_setting', '提到名字设置'],
         ['button_online_notify_setting', '上线提示设置'],
@@ -29,11 +30,14 @@ export class Localization {
         ['online_notify_cant_find', '没有与此ID的玩家建立关系。'],
         ['chat_notify_popup_title', '聊天消息'],
         ['online_notify_popup_title', '上线消息'],
+        ['online_notify_setting_col_online', '通知上线?'],
+        ['online_notify_setting_col_offline', '通知下线?']
     ]);
 
     private static ENTextMap = new Map<string, string>([
         ['notify_plus_setting_button_hint', 'Notify Plus Setting'],
         ["notify_friend_online", "[NotifyPlus] CHARANAME(CHARANUM) is online."],
+        ['notify_friend_offline', '[NotifyPlus] CHARANAME(CHARANUM) is offline.'],
         ['notify_plus_setting', '- Notify Plus Setting -'],
         ['button_mention_notify_setting', 'Mentioned Setting'],
         ['button_online_notify_setting', 'Online Setting'],
@@ -61,6 +65,8 @@ export class Localization {
         ['online_notify_cant_find', 'No relationship found with this player.'],
         ['chat_notify_popup_title', 'Chat Message'],
         ['online_notify_popup_title', 'Online Message'],
+        ['online_notify_setting_col_online', 'Notify Online?'],
+        ['online_notify_setting_col_offline', 'Notify Offline?']
     ]);
 
     static GetText(srcTag: string, fill: any = {}) {

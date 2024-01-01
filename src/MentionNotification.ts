@@ -1,7 +1,5 @@
 import { ModSDKModAPI } from "bondage-club-mod-sdk";
-import { ChatRoomLocalAction } from "./utils/ChatMessages";
-import { IsOwnedBy } from "./utils/Criteria";
-import { DataManager } from "./Data";
+import { DataManager } from "./Data/Data";
 import { Localization } from "./Lang";
 
 export class MentionNotification {
@@ -39,10 +37,9 @@ export class MentionNotification {
             let msg = Content.toLowerCase();
 
             const doRaise = (() => {
-                if (IsOwnedBy(Player, SenderCharacter)) {
+                if (Player.IsOwnedByMemberNumber(Sender)) {
                     if (mentionSetting.dom.some(_ => msg.includes(_))) return true;
-                }
-                else if (IsOwnedBy(SenderCharacter, Player)) {
+                } else if (SenderCharacter.IsOwnedByMemberNumber(Player.MemberNumber)) {
                     if (mentionSetting.sub.some(_ => msg.includes(_))) return true;
                 }
 

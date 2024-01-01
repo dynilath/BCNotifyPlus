@@ -3,13 +3,24 @@ interface NotifyPlusBasicSetting {
     Audio: NotificationAudioType,
 }
 
+interface NotifyPlusOnlineSettingSpecV1 {
+    MemberNumber: number;
+    enable: boolean;
+}
+
+interface NotifyPlusOnlineSettingSpecV2 {
+    MemberNumber: number;
+    enableOnline: boolean;
+    enableOffline: boolean;
+}
+
 interface NotifyPlusOnlineSetting {
     notifies: {
         friend: boolean;
         lover: boolean;
         sub: boolean;
         dom: boolean;
-        spec: { MemberNumber: number; enable: boolean }[];
+        spec: (NotifyPlusOnlineSettingSpecV1 | NotifyPlusOnlineSettingSpecV2)[];
     }
 }
 

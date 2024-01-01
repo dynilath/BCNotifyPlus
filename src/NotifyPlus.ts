@@ -1,6 +1,6 @@
 import bcMod from 'bondage-club-mod-sdk'
 import { Monitor } from './utils/Monitor';
-import { DataManager } from './Data';
+import { DataManager } from './Data/Data';
 import { ModName, ModVersion } from './Definition';
 import { GUISetting } from './GUI/GUI';
 import { MentionNotification } from './MentionNotification';

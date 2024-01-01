@@ -1,5 +1,5 @@
 import { ModSDKModAPI } from "bondage-club-mod-sdk";
-import { DataManager } from "../Data";
+import { DataManager } from "../Data/Data";
 import { DebugMode, ModVersion } from "../Definition";
 import { Localization } from "../Lang";
 import { MentionNotification } from "../MentionNotification";
@@ -152,11 +152,12 @@ export class OnlineNotifyMenu extends GUISettingScreen {
         MainCanvas.fillRect(titleBaseX, table_titleY, 1200, 64);
         MainCanvas.textAlign = "center";
 
-        const tableBaseX = titleBaseX + 220;
+        const tableBaseX = titleBaseX + 180;
 
         DrawText(Localization.GetText("online_notify_setting_col_membernum"), tableBaseX, table_titleY + 34, "Black");
-        DrawText(Localization.GetText("online_notify_setting_col_name"), tableBaseX + 280, table_titleY + 34, "Black");
-        DrawText(Localization.GetText("online_notify_setting_col_activate"), tableBaseX + 520, table_titleY + 34, "Black");
+        DrawText(Localization.GetText("online_notify_setting_col_name"), tableBaseX + 240, table_titleY + 34, "Black");
+        DrawText(Localization.GetText("online_notify_setting_col_online"), tableBaseX + 520, table_titleY + 34, "Black");
+        DrawText(Localization.GetText("online_notify_setting_col_offline"), tableBaseX + 720, table_titleY + 34, "Black");
 
         const ItemPerPage = 5;
         const ContentLen = data.onlineNotify.notifies.spec.length;
@@ -168,14 +169,15 @@ export class OnlineNotifyMenu extends GUISettingScreen {
             const id = i + ItemPerPage * this.pageNum;
             if (id >= ContentLen) continue;
 
-            const Setting = data.onlineNotify.notifies.spec[id];
+            const Setting = data.onlineNotify.notifies.spec[id] as NotifyPlusOnlineSettingSpecV2;
             const Name = (Player && Player.FriendNames && Player.FriendNames.get(Setting.MemberNumber)) || "Unknown"
 
             const thisY = table_titleY + 98 + i * 70;
             DrawText("" + Setting.MemberNumber, tableBaseX, thisY, "Black");
-            DrawText(Name, tableBaseX + 280, thisY, "Black");
-            DrawCheckbox(tableBaseX + 480, thisY - 32, 64, 64, "", Setting.enable);
-            DrawButton(tableBaseX + 680, thisY - 32, 64, 64, "X", "White", undefined, Localization.GetText('online_notify_remove_hint'));
+            DrawText(Name, tableBaseX + 240, thisY, "Black");
+            DrawCheckbox(tableBaseX + 480, thisY - 32, 64, 64, "", Setting.enableOnline);
+            DrawCheckbox(tableBaseX + 680, thisY - 32, 64, 64, "", Setting.enableOffline);
+            DrawButton(tableBaseX + 880, thisY - 32, 64, 64, "X", "White", undefined, Localization.GetText('online_notify_remove_hint'));
         }
 
         DrawBackNextButton(titleBaseX + 900, titleBaseY + 638, 300, 64, `${TextGet("Page")} ${this.pageNum + 1} / ${MaxPage}`, "White", "", () => "", () => "");
@@ -234,17 +236,20 @@ export class OnlineNotifyMenu extends GUISettingScreen {
             this.pageNum = Math.min(this.pageNum, MaxPage);
         }
 
-        const tableBaseX = titleBaseX + 220;
+        const tableBaseX = titleBaseX + 180;
         for (let i = 0; i < ItemPerPage; i++) {
             const id = i + ItemPerPage * this.pageNum;
             if (id >= ContentLen) continue;
 
             const thisY = table_titleY + 98 + i * 70;
-            const Setting = data.onlineNotify.notifies.spec[id];
+            const Setting = data.onlineNotify.notifies.spec[id] as NotifyPlusOnlineSettingSpecV2;
             if (MouseIn(tableBaseX + 480, thisY - 32, 64, 64)) {
-                Setting.enable = !Setting.enable;
+                Setting.enableOnline = !Setting.enableOnline;
             }
             if (MouseIn(tableBaseX + 680, thisY - 32, 64, 64)) {
+                Setting.enableOffline = !Setting.enableOffline;
+            }
+            if (MouseIn(tableBaseX + 880, thisY - 32, 64, 64)) {
                 data.onlineNotify.notifies.spec.splice(id, 1);
             }
         }
