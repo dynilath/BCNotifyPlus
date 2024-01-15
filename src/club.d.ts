@@ -66,6 +66,9 @@ interface Character {
         ShowStatus?: boolean;
         EnableAfkTimer: boolean;
     };
+    ExtensionSettings: {
+        [k: string]: any;
+    };
     ImmersionSettings?: {
         BlockGaggedOOC: boolean;
         StimulationEvents: boolean;
@@ -202,6 +205,7 @@ declare function CharacterNickname(C: Character): string;
 declare function CharacterLoadCanvas(C: Character): void;
 declare function CharacterChangeMoney(C: Character, Value: number): void;
 declare function CharacterSetActivePose(C: Character, NewPose: string): void;
+declare function ServerPlayerExtensionSettingsSync(dataKeyName: string): void;
 
 declare function ServerPlayerAppearanceSync(): void;
 declare function ServerPlayerInventorySync(): void;
@@ -367,7 +371,7 @@ declare function NotificationEventHandlerSetup(eventType: string, setting: { Ale
 // skill.js
 declare function SkillProgress(SkillType: string, SkillProgress: number): void;
 declare function SkillSetRatio(SkillType: string, Ratio: number, Push: boolean = true): void;
-declare function SkillGetRatio(SkillType: string): number; 
+declare function SkillGetRatio(SkillType: string): number;
 
 // vibrator.js
 declare function VibratorModeSetProperty(I: Item, Property: any): void;

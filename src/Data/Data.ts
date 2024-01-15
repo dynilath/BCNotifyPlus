@@ -1,6 +1,7 @@
 import { ModSDKModAPI } from "bondage-club-mod-sdk";
 import { DefaultValue } from "./Default";
 import { ValidateSetting } from "./Validate";
+import { DataKeyName } from "../Definition";
 
 export class DataManager {
     private static _instance: DataManager | undefined;
@@ -9,7 +10,7 @@ export class DataManager {
         if (this._instance === undefined)
             this._instance = new DataManager;
 
-        function LoadAndMessage(C: { OnlineSettings: any }) {
+        function LoadAndMessage(C: Character | null | undefined) {
             DataManager.instance.ServerTakeData(C);
             if (msg) console.log(msg);
         }
@@ -20,7 +21,7 @@ export class DataManager {
         });
 
         if (Player && Player.MemberNumber) {
-            LoadAndMessage(Player as { OnlineSettings: any });
+            LoadAndMessage(Player);
         }
     }
 
@@ -56,19 +57,16 @@ export class DataManager {
     }
 
     ServerStoreData() {
-        if (Player && Player.OnlineSettings) {
-            ((Player.OnlineSettings as any) as NotifyPlusModSetting).BCNotifyPlusSetting = this.EncodeDataStr();
-            if (ServerAccountUpdate) {
-                ServerAccountUpdate.QueueData({ OnlineSettings: Player.OnlineSettings });
-            }
+        if (Player && Player.ExtensionSettings) {
+            Player.ExtensionSettings[DataKeyName] = this.EncodeDataStr();
+            ServerPlayerExtensionSettingsSync(DataKeyName);
         }
     }
 
-    ServerTakeData(C: { OnlineSettings: any }) {
-        if (C && C.OnlineSettings) {
-            let rawData = ((C.OnlineSettings as any) as NotifyPlusModSetting).BCNotifyPlusSetting;
-            this.DecodeDataStr(rawData);
-        }
+    ServerTakeData(C: Character | null | undefined) {
+        if (!C) return;
+        const setting_data = C.ExtensionSettings[DataKeyName] || (C.OnlineSettings as any)[DataKeyName];
+        this.DecodeDataStr(setting_data);
     }
 
     get data() {
