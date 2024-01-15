@@ -27,11 +27,11 @@ function PickBoolean(d: any, def: boolean): boolean {
     return def;
 }
 
-function IsV1Spec(d: any): d is NotifyPlusOnlineSettingSpecV1 {
+function IsV1Spec(d: any): d is NotifyPlusSpecV1 {
     return d !== undefined && typeof d.MemberNumber === 'number' && typeof d.enable === 'boolean';
 }
 
-function IsV2Spec(d: any): d is NotifyPlusOnlineSettingSpecV2 {
+function IsV2Spec(d: any): d is NotifyPlusSpecV2 {
     return d !== undefined && typeof d.MemberNumber === 'number' && typeof d.enableOnline === 'boolean' && typeof d.enableOffline === 'boolean';
 }
 
@@ -51,7 +51,7 @@ export function ValidateSetting(d: any): NotifyPlusSolidSetting {
         data.onlineNotify.chatMsg = PickBoolean(d.onlineNotify.chatMsg, data.onlineNotify.chatMsg);
 
         if (d.onlineNotify.notifies !== undefined) {
-            (['friend', 'lover', 'sub', 'dom'] as (keyof NotifyPlusOnlineSetting['notifies'])[]).forEach((_) => {
+            (['friend', 'lover', 'sub', 'dom'] as (keyof NotifyPlusSpec['notifies'])[]).forEach((_) => {
                 (data.onlineNotify.notifies[_] as boolean) = PickBoolean(d.onlineNotify.notifies[_], data.onlineNotify.notifies[_] as boolean);
             });
 
@@ -60,7 +60,7 @@ export function ValidateSetting(d: any): NotifyPlusSolidSetting {
                     if (IsV2Spec(_)) return _;
                     if (IsV1Spec(_)) return { MemberNumber: _.MemberNumber, enableOnline: _.enable, enableOffline: _.enable };
                     return undefined;
-                }).filter((_: any) => _ !== undefined) as NotifyPlusOnlineSettingSpecV2[];
+                }).filter((_: any) => _ !== undefined) as NotifyPlusSpecV2[];
             }
         }
     }

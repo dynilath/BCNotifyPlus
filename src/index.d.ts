@@ -3,24 +3,24 @@ interface NotifyPlusBasicSetting {
     Audio: NotificationAudioType,
 }
 
-interface NotifyPlusOnlineSettingSpecV1 {
+interface NotifyPlusSpecV1 {
     MemberNumber: number;
     enable: boolean;
 }
 
-interface NotifyPlusOnlineSettingSpecV2 {
+interface NotifyPlusSpecV2 {
     MemberNumber: number;
     enableOnline: boolean;
     enableOffline: boolean;
 }
 
-interface NotifyPlusOnlineSetting {
+interface NotifyPlusSpec {
     notifies: {
         friend: boolean;
         lover: boolean;
         sub: boolean;
         dom: boolean;
-        spec: (NotifyPlusOnlineSettingSpecV1 | NotifyPlusOnlineSettingSpecV2)[];
+        spec: (NotifyPlusSpecV1 | NotifyPlusSpecV2)[];
     }
 }
 
@@ -34,7 +34,7 @@ interface NotifyPlusChatSetting {
 
 interface NotifyPlusSolidSetting {
     chatNotify: { setting: NotifyPlusBasicSetting } & NotifyPlusChatSetting;
-    onlineNotify: { setting: NotifyPlusBasicSetting } & { chatMsg: boolean } & NotifyPlusOnlineSetting;
+    onlineNotify: { setting: NotifyPlusBasicSetting } & { chatMsg: boolean } & NotifyPlusSpec;
 }
 
 type NotifyPlusPartialSetting = Partial<NotifyPlusSolidSetting>;

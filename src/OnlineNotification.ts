@@ -82,7 +82,7 @@ export class OnlineNotification {
 
                 removed.forEach(c => {
                     const doNotify = (() => {
-                        let specV = notifySetting.notifies.spec.find(_ => _.MemberNumber === c.MemberNumber) as NotifyPlusOnlineSettingSpecV2 | undefined;
+                        let specV = notifySetting.notifies.spec.find(_ => _.MemberNumber === c.MemberNumber) as NotifyPlusSpecV2 | undefined;
                         if (specV) return specV.enableOffline;
 
                         if (notifySetting.notifies.dom)
@@ -105,7 +105,7 @@ export class OnlineNotification {
 
                 added.forEach(c => {
                     const doNotify = (() => {
-                        let specV = notifySetting.notifies.spec.find(_ => _.MemberNumber === c.MemberNumber) as NotifyPlusOnlineSettingSpecV2 | undefined;
+                        let specV = notifySetting.notifies.spec.find(_ => _.MemberNumber === c.MemberNumber) as NotifyPlusSpecV2 | undefined;
                         if (specV) return specV.enableOnline;
 
                         if (notifySetting.notifies.dom)

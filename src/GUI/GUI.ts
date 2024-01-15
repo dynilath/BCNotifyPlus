@@ -169,7 +169,7 @@ export class OnlineNotifyMenu extends GUISettingScreen {
             const id = i + ItemPerPage * this.pageNum;
             if (id >= ContentLen) continue;
 
-            const Setting = data.onlineNotify.notifies.spec[id] as NotifyPlusOnlineSettingSpecV2;
+            const Setting = data.onlineNotify.notifies.spec[id] as NotifyPlusSpecV2;
             const Name = (Player && Player.FriendNames && Player.FriendNames.get(Setting.MemberNumber)) || "Unknown"
 
             const thisY = table_titleY + 98 + i * 70;
@@ -242,7 +242,7 @@ export class OnlineNotifyMenu extends GUISettingScreen {
             if (id >= ContentLen) continue;
 
             const thisY = table_titleY + 98 + i * 70;
-            const Setting = data.onlineNotify.notifies.spec[id] as NotifyPlusOnlineSettingSpecV2;
+            const Setting = data.onlineNotify.notifies.spec[id] as NotifyPlusSpecV2;
             if (MouseIn(tableBaseX + 480, thisY - 32, 64, 64)) {
                 Setting.enableOnline = !Setting.enableOnline;
             }
