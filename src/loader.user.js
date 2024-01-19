@@ -15,7 +15,7 @@
 
 (function () {
     "use strict";
-    const src = `https://dynilath.gitlab.io/SaotomeToyStoreVendor/NotifyPlus/main.js?v=${Date.now()}`;
+    const src = `__DEPLOY_SITE__?v=${Date.now()}`;
     if (typeof BCNotifyPlus_Loaded === "undefined") {
         const n = document.createElement("script");
         n.setAttribute("type", "text/javascript");
