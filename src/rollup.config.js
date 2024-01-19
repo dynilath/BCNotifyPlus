@@ -35,10 +35,7 @@ const config = {
         resolve({ browser: true }),
         typescript({ tsconfig: `${relative_dir}/tsconfig.json`, inlineSources: true }),
         commonjs(),
-        cleanup({
-            comments: 'none',
-            sourcemap: false,
-        })
+        cleanup({ sourcemap: false })
     ],
 }
 
