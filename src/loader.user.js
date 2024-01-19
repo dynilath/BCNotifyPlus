@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name BC Notify Plus
+// @name BC Notify Plus (Loader)
 // @namespace https://www.bondageprojects.com/
-// @version 1.0
+// @version 1.2
 // @description Improved BC notification.
 // @author Saki Saotome
 // @match bondageprojects.elementfx.com/*/BondageClub/*
@@ -16,7 +16,10 @@
 (function () {
     "use strict";
     const src = `https://dynilath.gitlab.io/SaotomeToyStoreVendor/NotifyPlus/main.js?v=${Date.now()}`;
-    const loadScript = (url, okay, failed) => fetch(url).then(r => {if(r.ok) return r.text();
-        else throw new Error("Failed to load script")} ).then(okay).catch(() => { setTimeout(() => {failed(url, okay, failed)}, 15000); });
-    loadScript(src, text => {if (typeof BCNotifyPlus_Loaded === "undefined") eval(text);}, loadScript);
+    if (typeof BCNotifyPlus_Loaded === "undefined") {
+        const n = document.createElement("script");
+        n.setAttribute("type", "text/javascript");
+        n.setAttribute("src", src);
+        document.head.appendChild(n);
+    }
 })();
