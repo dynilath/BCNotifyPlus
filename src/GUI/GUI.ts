@@ -6,7 +6,6 @@ import { MentionNotification } from "../MentionNotification";
 import { OnlineNotification } from "../OnlineNotification";
 
 export abstract class GUISettingScreen {
-    Load() { }
     Run() { }
     Click() { }
     Exit() { setSubscreen(null); }
@@ -375,9 +374,6 @@ export class GUISetting {
             this._currentScreen.Unload();
         }
         this._currentScreen = subscreen;
-        if (this._currentScreen) {
-            this._currentScreen.Load();
-        }
     }
 
     constructor() {

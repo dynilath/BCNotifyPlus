@@ -8,10 +8,10 @@ export class Monitor {
     _MonitorList = new Array<{ interval: number, timer: number, event: MonitorEvent }>;
     _OnceList = new Array<{ time: number, event: MonitorEvent }>;
     _TimerStart = Date.now();
-    _MonitorId: NodeJS.Timer | undefined = undefined;
+    _MonitorId: number | undefined = undefined;
 
     constructor(resolution: number) {
-        this._MonitorId = setInterval(() => {
+        this._MonitorId = window.setInterval(() => {
             let this_pass_time = Date.now();
 
             if (CurrentScreen !== undefined && (CurrentScreen === "Relog" || CurrentScreen === "Login")) {
