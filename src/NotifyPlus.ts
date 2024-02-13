@@ -1,17 +1,17 @@
 import bcMod from 'bondage-club-mod-sdk'
 import { Monitor } from './utils/Monitor';
 import { DataManager } from './Data/Data';
-import { ModName, ModVersion } from './Definition';
+import { GIT_REPO, ModName, ModVersion } from './Definition';
 import { GUISetting } from './GUI/GUI';
 import { MentionNotification } from './MentionNotification';
 import { OnlineNotification } from './OnlineNotification';
+import { GUIMainMenu } from './GUI/GUIMainMenu';
 
 (function () {
 
-    let mod = bcMod.registerMod({ name: ModName, fullName: ModName, version: ModVersion });
+    window.BCNotifyPlus_Loaded = false;
 
-    window.BCNotifyPlus = function (enable: boolean, src: NotifyPlusChatSetting) {
-    }
+    let mod = bcMod.registerMod({ name: ModName, fullName: ModName, version: ModVersion, repository: GIT_REPO });
 
     const monitor = new Monitor(200);
 
@@ -19,12 +19,9 @@ import { OnlineNotification } from './OnlineNotification';
 
     MentionNotification.init(mod);
 
-    const GUI = new GUISetting;
-    GUI.load(mod);
+    GUISetting.init(mod, () => new GUIMainMenu);
 
     DataManager.init(mod, `${ModName} v${ModVersion} ready.`);
 
     window.BCNotifyPlus_Loaded = true;
-
-    console.log(`${ModName} v${ModVersion} loaded.`);
 })()

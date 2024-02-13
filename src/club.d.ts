@@ -340,6 +340,7 @@ declare var MouseX: number;
 declare var MouseY: number;
 declare var MainCanvas: CanvasRenderingContext2D;
 declare function DrawGetImage(Source: string): HTMLImageElement;
+declare function DrawImage(Source: string, X: number, Y: number): void;
 declare function DrawButton(Left: number, Top: number, Width: number, Height: number, Label: string, Color: string, Image?: string, HoveringText?: string, Disabled?: boolean): void;
 declare function DrawCheckbox(Left: number, Top: number, Width: number, Height: number, Text: string, IsChecked: boolean, Disabled?: boolean, TextColor?: string, CheckImage?: string): void;
 declare function DrawText(Text: string, X: number, Y: number, Color: string, BackColor?: string): void;

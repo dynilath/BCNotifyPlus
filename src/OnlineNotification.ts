@@ -3,12 +3,12 @@ import { _ } from "core-js";
 import { ChatRoomLocalAction } from "./utils/ChatMessages";
 import { Monitor } from "./utils/Monitor";
 import { DataManager } from "./Data/Data";
-import { Localization } from "./Lang";
+import { GetText } from "./i18n";
 
 
 function raiseOnlineNotify(name: string, id: number) {
     const data = DataManager.instance.data.onlineNotify;
-    const content = Localization.GetText("notify_friend_online", { CHARANAME: name, CHARANUM: `${id}` });
+    const content = GetText("notify_friend_online", { CHARANAME: name, CHARANUM: `${id}` });
     if (data.setting.AlertType !== 0) {
         NotificationRaise(OnlineNotification.EventType, { body: content, memberNumber: id, characterName: name });
     }
@@ -17,7 +17,7 @@ function raiseOnlineNotify(name: string, id: number) {
 
 function raiseOfflineNotify(name: string, id: number) {
     const data = DataManager.instance.data.onlineNotify;
-    const content = Localization.GetText("notify_friend_offline", { CHARANAME: name, CHARANUM: `${id}` });
+    const content = GetText("notify_friend_offline", { CHARANAME: name, CHARANUM: `${id}` });
     if (data.setting.AlertType !== 0) {
         NotificationRaise(OnlineNotification.EventType, { body: content, memberNumber: id, characterName: name });
     }
@@ -64,7 +64,7 @@ export class OnlineNotification {
 
         mod.hookFunction('DialogFindPlayer', 0, (args, next) => {
             if (args[0] === `NotificationTitle${this.EventType}`) {
-                return Localization.GetText('online_notify_popup_title')
+                return GetText('online_notify_popup_title')
             }
             return next(args);
         });

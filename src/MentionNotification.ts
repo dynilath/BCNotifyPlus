@@ -1,6 +1,6 @@
 import { ModSDKModAPI } from "bondage-club-mod-sdk";
 import { DataManager } from "./Data/Data";
-import { Localization } from "./Lang";
+import { GetText } from "./i18n";
 
 export class MentionNotification {
     static EventType = 'NotifyPlusChatMentioned';
@@ -19,7 +19,7 @@ export class MentionNotification {
 
         mod.hookFunction('DialogFindPlayer', 0, (args, next) => {
             if (args[0] === `NotificationTitle${this.EventType}`) {
-                return Localization.GetText('chat_notify_popup_title')
+                return GetText('chat_notify_popup_title')
             }
             return next(args);
         });
