@@ -1,5 +1,8 @@
 import { Styles } from "../Definition";
-import { IPoint, IRect, MouseInRect, WithinRect } from "./IGUI";
+import { MouseInRect } from "./IGUI";
+import { WithinRect } from "./IGUI";
+import { IPoint } from "./IGUI";
+import { IRect } from "./IGUI";
 import { GetIcon, Icons } from "./Icons";
 
 export function BCPreferenceNotificationsDrawSetting(pos: IPoint, text: string, setting: NotifyPlusBasicSetting) {

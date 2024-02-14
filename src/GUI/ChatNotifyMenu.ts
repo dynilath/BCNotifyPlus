@@ -2,13 +2,13 @@ import { DataManager } from "../Data/Data";
 import { GetText } from "../i18n";
 import { MentionNotification } from "../MentionNotification";
 import { ADrawText, BCDrawExitButton, BCMouseInExitButton } from "./Common";
-import { IGUI } from "./GUI";
+import { GUISettingScreen } from "./GUI";
 import { setSubscreen } from "./GUI";
 
 const titleBaseX = 300;
 const titleBaseY = 175;
 
-export class ChatNotifyMenu extends IGUI {
+export class ChatNotifyMenu extends GUISettingScreen {
     private static keys: (keyof NotifyPlusChatSetting)[] = ['public', 'friend', 'lover', 'sub', 'dom'];
 
     private static ElementID = (k: keyof NotifyPlusChatSetting) => `BCNotifyPlusChat_Input${k}`;
@@ -36,9 +36,9 @@ export class ChatNotifyMenu extends IGUI {
         }
     };
 
-    prev: IGUI;
+    prev: GUISettingScreen;
 
-    constructor(prev: IGUI) {
+    constructor(prev: GUISettingScreen) {
         super();
         this.prev = prev;
     }

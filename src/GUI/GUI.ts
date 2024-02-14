@@ -1,16 +1,21 @@
 import { ModSDKModAPI } from "bondage-club-mod-sdk";
 import { DebugMode } from "../Definition";
 import { GetText } from "../i18n";
-import { IRect, MouseInRect } from "./IGUI";
+import { MouseInRect } from "./IGUI";
+import { IRect } from "./IGUI";
 
-export function getCurrentSubscreen(): IGUI | null {
+export function getCurrentSubscreen(): GUISettingScreen | null {
     return GUISetting.instance && GUISetting.instance.currentScreen;
 }
 
-export function setSubscreen(subscreen: IGUI | null): void {
+export function setSubscreen(subscreen: GUISettingScreen | null): void {
     if (GUISetting.instance) {
         GUISetting.instance.currentScreen = subscreen;
     }
+}
+
+export function hasFocus(subscreen: GUISettingScreen): boolean {
+    return getCurrentSubscreen() === subscreen;
 }
 
 function drawTooltip() {
@@ -41,26 +46,26 @@ const EntryButton: IRect = { x: 1815, y: 180, width: 90, height: 90 };
 export class GUISetting {
     static instance: GUISetting | null = null;
 
-    private _currentScreen: IGUI | null = null;
+    private _currentScreen: GUISettingScreen | null = null;
 
-    private _mainScreenProvider: (() => IGUI) | null = null;
+    private _mainScreenProvider: (() => GUISettingScreen) | null = null;
 
-    get currentScreen(): IGUI | null {
+    get currentScreen(): GUISettingScreen | null {
         return this._currentScreen;
     }
 
-    set currentScreen(subscreen: IGUI | null) {
+    set currentScreen(subscreen: GUISettingScreen | null) {
         if (this._currentScreen) {
             this._currentScreen.Unload();
         }
         this._currentScreen = subscreen;
     }
 
-    static init(mod: ModSDKModAPI, func: () => IGUI) {
+    static init(mod: ModSDKModAPI, func: () => GUISettingScreen) {
         GUISetting.instance = new GUISetting(mod, func);
     }
 
-    constructor(mod: ModSDKModAPI, func: () => IGUI) {
+    constructor(mod: ModSDKModAPI, func: () => GUISettingScreen) {
         this._mainScreenProvider = func;
         this.hook(mod);
     }
@@ -108,7 +113,7 @@ export class GUISetting {
     }
 }
 
-export abstract class IGUI {
+export abstract class GUISettingScreen {
     Run() { }
     Click() { }
     MouseWheel(event: WheelEvent) { }

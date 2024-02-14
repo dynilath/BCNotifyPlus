@@ -2,17 +2,17 @@ import { DataManager } from "../Data/Data";
 import { GetText } from "../i18n";
 import { OnlineNotification } from "../OnlineNotification";
 import { ADrawText, BCDrawExitButton } from "./Common";
-import { IGUI } from "./GUI";
+import { GUISettingScreen } from "./GUI";
 import { setSubscreen } from "./GUI";
 
 const input_id = 'BCNotifyPlus_Online_Setting_input';
 const titleBaseX = 400;
 const titleBaseY = 175;
 
-export class OnlineNotifyMenu extends IGUI {
-    prev: IGUI;
+export class OnlineNotifyMenu extends GUISettingScreen {
+    prev: GUISettingScreen;
 
-    constructor(prev: IGUI) {
+    constructor(prev: GUISettingScreen) {
         super();
         this.prev = prev;
     }

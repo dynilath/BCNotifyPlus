@@ -5,7 +5,7 @@ import { GIT_REPO, ModName, ModVersion } from './Definition';
 import { GUISetting } from './GUI/GUI';
 import { MentionNotification } from './MentionNotification';
 import { OnlineNotification } from './OnlineNotification';
-import { GUIMainMenu } from './GUI/GUIMainMenu';
+import { MainMenu } from './GUI/GUIMainMenu';
 
 (function () {
 
@@ -19,9 +19,11 @@ import { GUIMainMenu } from './GUI/GUIMainMenu';
 
     MentionNotification.init(mod);
 
-    GUISetting.init(mod, () => new GUIMainMenu);
+    GUISetting.init(mod, () => new MainMenu);
 
     DataManager.init(mod, `${ModName} v${ModVersion} ready.`);
 
     window.BCNotifyPlus_Loaded = true;
+
+    console.log(`${ModName} v${ModVersion} loaded.`);
 })()
