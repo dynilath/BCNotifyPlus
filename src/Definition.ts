@@ -1,9 +1,5 @@
-function buildVersion(v1: number, v2: number, v3: number) {
-    return `${v1}.${v2}.${v3}`;
-}
-
-export const ModVersion = buildVersion(0, 4, 0);
-export const ModName = 'Notify Plus'
+export const ModVersion = __mod_version__;
+export const ModName = __mod_name__;
 
 export const DebugMode = false;
 
@@ -11,7 +7,7 @@ export const CUSTOM_ACTION_TAG = 'NP_CustomAction';
 
 export const DataKeyName = 'BCNotifyPlusSetting';
 
-export const GIT_REPO = 'https://github.com/dynilath/BCNotifyPlus';
+export const GIT_REPO = __repo__;
 
 export const Styles = {
     Active: "#CCC",

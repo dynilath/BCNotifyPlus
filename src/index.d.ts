@@ -41,10 +41,12 @@ type NotifyPlusPartialSetting = Partial<NotifyPlusSolidSetting>;
 
 type NotifyPlusModSetting = { BCNotifyPlusSetting?: string }
 
-interface Window {
-    BCNotifyPlus_Loaded?: boolean;
-    BCNotifyPlus?: (enable: boolean, source: NoifyPlusChatSetting) => void;
-}
-
 declare function PreferenceNotificationsDrawSetting(Left: number, Top: number, Text: string, Setting: NotifyPlusBasicSetting);
 declare function PreferenceNotificationsClickSetting(Left: number, Top: number, Setting: NotifyPlusBasicSetting, EventType: string);
+
+interface Window {
+    __load_flag__?: boolean;
+}
+declare const __mod_version__: string;
+declare const __mod_name__: string;
+declare const __repo__: string;

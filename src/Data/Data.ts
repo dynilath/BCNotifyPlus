@@ -10,7 +10,7 @@ export class DataManager {
         if (this._instance === undefined)
             this._instance = new DataManager;
 
-        function LoadAndMessage(C: Character | null | undefined) {
+        function LoadAndMessage(C: PlayerCharacter | null | undefined) {
             DataManager.instance.ServerTakeData(C);
             if (msg) console.log(msg);
         }
@@ -63,7 +63,7 @@ export class DataManager {
         }
     }
 
-    ServerTakeData(C: Character | null | undefined) {
+    ServerTakeData(C: PlayerCharacter | null | undefined) {
         if (!C) return;
         const setting_data = C.ExtensionSettings[DataKeyName] || (C.OnlineSettings as any)[DataKeyName];
         this.DecodeDataStr(setting_data);

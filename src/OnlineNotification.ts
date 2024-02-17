@@ -1,9 +1,8 @@
 import { ModSDKModAPI } from "bondage-club-mod-sdk";
-import { _ } from "core-js";
-import { ChatRoomLocalAction } from "./utils/ChatMessages";
-import { Monitor } from "./utils/Monitor";
+import { Monitor } from "bc-utilities";
 import { DataManager } from "./Data/Data";
 import { GetText } from "./i18n";
+import { ChatRoomAction } from "bc-utilities";
 
 
 function raiseOnlineNotify(name: string, id: number) {
@@ -12,7 +11,7 @@ function raiseOnlineNotify(name: string, id: number) {
     if (data.setting.AlertType !== 0) {
         NotificationRaise(OnlineNotification.EventType, { body: content, memberNumber: id, characterName: name });
     }
-    if (data.chatMsg) ChatRoomLocalAction(content);
+    if (data.chatMsg) ChatRoomAction.instance.LocalAction(content);
 }
 
 function raiseOfflineNotify(name: string, id: number) {
@@ -21,7 +20,7 @@ function raiseOfflineNotify(name: string, id: number) {
     if (data.setting.AlertType !== 0) {
         NotificationRaise(OnlineNotification.EventType, { body: content, memberNumber: id, characterName: name });
     }
-    if (data.chatMsg) ChatRoomLocalAction(content);
+    if (data.chatMsg) ChatRoomAction.instance.LocalAction(content);
 }
 interface ServerAccountQueryResultItem {
     MemberName: string;

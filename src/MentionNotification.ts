@@ -9,7 +9,7 @@ export class MentionNotification {
 
         const raiseNotify = (C: Character, content: string) => {
             const data = DataManager.instance.data.chatNotify;
-            if (C.ID !== 0
+            if (!C.IsPlayer()
                 && data.setting.AlertType !== 0
                 && !(document.hasFocus() && ElementIsScrolledToEnd("TextAreaChatLog")))
                 NotificationRaise(MentionNotification.EventType, {
@@ -26,7 +26,7 @@ export class MentionNotification {
 
         mod.hookFunction('ChatRoomMessage', 9, (args, next) => {
             next(args);
-            const { Type, Content, Sender } = (args[0] as IChatRoomMessage);
+            const { Type, Content, Sender } = (args[0] as ServerChatRoomMessage);
             if (!Player || !Player.MemberNumber || !Player.FriendList) return;
             if (Sender === Player.MemberNumber) return;
             const SenderCharacter = ChatRoomCharacter.find(_ => _.MemberNumber === Sender);
@@ -46,7 +46,7 @@ export class MentionNotification {
                 if (SenderCharacter.IsLoverOfMemberNumber(Player.MemberNumber)) {
                     if (mentionSetting.lover.some(_ => msg.includes(_))) return true;
                 }
-                if (SenderCharacter.FriendList && Player.FriendList.includes(Sender)) {
+                if (Player.FriendList?.includes(Sender)) {
                     if (mentionSetting.friend.some(_ => msg.includes(_))) return true;
                 }
                 if (mentionSetting.public.some(_ => msg.includes(_))) return true;
