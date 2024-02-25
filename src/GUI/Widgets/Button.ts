@@ -4,7 +4,7 @@ import { AGUIItem } from "./AGUI";
 import { WithinRect as WithinRect } from "../IGUI";
 import { IPoint } from "../IGUI";
 import { IRect } from "../IGUI";
-import { ADrawCircleRect, ADrawFramedRect, ADrawIcon, ADrawRoundRect, ADrawTextButton, ADrawTextFit } from "../Common";
+import { ADrawCircleRect, ADrawFramedRect, ADrawIcon, ADrawRoundRect, ADrawTextButton, ADrawTextFit, BCDrawButton } from "../Common";
 
 export class StdButton extends AGUIItem {
     constructor(readonly rect: IRect, readonly text: string | (() => string), readonly callback: () => void, readonly enabled?: () => boolean) {
@@ -120,7 +120,7 @@ export class TextButton extends AGUIItem {
 }
 
 export class ExitButton extends AGUIItem {
-    private _rect: IRect = {
+    private readonly _rect: IRect = {
         x: 1815,
         y: 75,
         width: 90,
@@ -135,7 +135,7 @@ export class ExitButton extends AGUIItem {
     }
 
     Draw(hasFocus: boolean) {
-        DrawButton(this._rect.x, this._rect.y, this._rect.width, this._rect.height, "", "White", "Icons/Exit.png", undefined, hasFocus);
+        BCDrawButton(this._rect, "", { img: "Icons/Exit.png", disabled: !hasFocus });
     }
 
     Click(mouse: IPoint) {

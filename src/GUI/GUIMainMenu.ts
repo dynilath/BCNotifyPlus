@@ -39,56 +39,6 @@ const GitHubButton: IRect = {
     height: 100
 };
 
-// export class MainMenu extends GUISettingScreen {
-
-//     Run(): void {
-//         const data = DataManager.instance.data;
-//         BCDrawExitButton();
-
-//         ADrawText(TitleText, `${GetText(`notify_plus_setting`)} v${ModVersion}`, { shade: "Grey" });
-
-//         ADrawTextButton(ChatNotifyButton, GetText(`button_mention_notify_setting`));
-//         BCPreferenceNotificationsDrawSetting(ChatNotifySetting, GetText(`chat_notify_notification_setting`), data.chatNotify.setting);
-
-//         ADrawTextButton(OnlineNotifyButton, GetText(`button_online_notify_setting`));
-//         BCPreferenceNotificationsDrawSetting(OnlineNotifySetting, GetText(`online_notify_notification_setting`), data.onlineNotify.setting);
-//         BCDrawCheckbox(ChatNotifyChatMsg, GetText("online_setting_chat_room_message"), data.onlineNotify.chatMsg);
-
-//         ADrawRoundIconButton(GitHubButton, 15, "github");
-//     }
-
-//     Click(): void {
-//         const data = DataManager.instance.data;
-
-//         if (BCMouseInExitButton()) {
-//             this.Exit();
-//             return;
-//         }
-
-//         if (MouseInRect(ChatNotifyButton)) {
-//             setSubscreen(new ChatNotifyMenu(this));
-//             return;
-//         }
-
-//         if (MouseInRect(OnlineNotifyButton)) {
-//             setSubscreen(new OnlineNotifyMenu(this));
-//             return;
-//         }
-
-//         if (MouseInRect(ChatNotifyChatMsg)) {
-//             data.onlineNotify.chatMsg = !data.onlineNotify.chatMsg;
-//         }
-
-//         if (MouseInRect(GitHubButton)) {
-//             window.open(GIT_REPO, '_blank');
-//         }
-
-//         PreferenceNotificationsClickSetting(ChatNotifySetting.x, ChatNotifySetting.y, data.chatNotify.setting, MentionNotification.EventType);
-//         PreferenceNotificationsClickSetting(OnlineNotifySetting.x, OnlineNotifySetting.y, data.onlineNotify.setting, OnlineNotification.EventType);
-//         DataManager.instance.ServerStoreData();
-//     }
-// }
-
 export class MainMenu extends AGUIScreen {
     constructor() {
         super(null);
