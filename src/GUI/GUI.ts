@@ -1,5 +1,5 @@
 import { ModSDKModAPI } from "bondage-club-mod-sdk";
-import { DebugMode } from "../Definition";
+import { DebugMode, ModName } from "../Definition";
 import { GetText } from "../i18n";
 import { MouseInRect } from "./IGUI";
 import { IRect } from "./IGUI";
@@ -11,6 +11,10 @@ export function getCurrentSubscreen(): GUISettingScreen | null {
 export function setSubscreen(subscreen: GUISettingScreen | null): void {
     if (GUISetting.instance) {
         GUISetting.instance.currentScreen = subscreen;
+        if (!GUISetting.instance.currentScreen) {
+            if (typeof PreferenceSubscreenExtensionsClear === "function")
+                PreferenceSubscreenExtensionsClear();
+        }
     }
 }
 
@@ -67,10 +71,40 @@ export class GUISetting {
 
     constructor(mod: ModSDKModAPI, func: () => GUISettingScreen) {
         this._mainScreenProvider = func;
-        this.hook(mod);
+
+        if (typeof PreferenceRegisterExtensionSetting === "function") {
+            this.registerGUI();
+        } else {
+            this.hookGUI(mod);
+        }
     }
 
-    hook(mod: ModSDKModAPI<any>) {
+    registerGUI() {
+        PreferenceRegisterExtensionSetting(
+            {
+                Identifier: ModName,
+                Image: "Icons/Notifications.png",
+                ButtonText: () => GetText("notify_plus_setting_button_hint"),
+                load: () => {
+                    if (this._mainScreenProvider)
+                        this.currentScreen = this._mainScreenProvider();
+                },
+                run: () => {
+                    if (this._currentScreen) {
+                        const origAlign = MainCanvas.textAlign;
+                        this._currentScreen.Run();
+                        drawTooltip();
+                        MainCanvas.textAlign = origAlign;
+                    }
+                },
+                click: () => this._currentScreen?.Click(),
+                unload: () => this._currentScreen?.Unload(),
+                exit: () => this._currentScreen?.Exit()
+            }
+        )
+    }
+
+    hookGUI(mod: ModSDKModAPI<any>) {
         mod.hookFunction("PreferenceRun", 10, (args, next) => {
             if (this._currentScreen) {
                 const origAlign = MainCanvas.textAlign;
@@ -79,7 +113,6 @@ export class GUISetting {
                 MainCanvas.textAlign = origAlign;
                 return;
             }
-
             next(args);
         });
 
