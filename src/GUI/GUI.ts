@@ -105,7 +105,7 @@ export class GUISetting {
     }
 
     hookGUI(mod: ModSDKModAPI<any>) {
-        mod.hookFunction("PreferenceRun", 10, (args, next) => {
+        mod.hookFunction("PreferenceSubscreenNotificationsRun", 10, (args, next) => {
             if (this._currentScreen) {
                 const origAlign = MainCanvas.textAlign;
                 this._currentScreen.Run();
@@ -113,10 +113,7 @@ export class GUISetting {
                 MainCanvas.textAlign = origAlign;
                 return;
             }
-            next(args);
-        });
 
-        mod.hookFunction("PreferenceSubscreenNotificationsRun", 10, (args, next) => {
             next(args);
             DrawButton(1815, 180, 90, 90, "", "White", "Icons/Notifications.png", GetText("notify_plus_setting_button_hint"));
         });
@@ -135,12 +132,11 @@ export class GUISetting {
             next(args);
         });
 
-        mod.hookFunction("InformationSheetExit", 10, (args, next) => {
+        mod.hookFunction("PreferenceSubscreenNotificationsExit", 10, (args, next) => {
             if (this._currentScreen) {
                 this._currentScreen.Exit();
                 return;
             }
-
             return next(args);
         });
     }
