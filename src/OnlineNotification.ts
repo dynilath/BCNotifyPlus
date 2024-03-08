@@ -54,12 +54,12 @@ export class OnlineNotification {
         this.onlineFriendMemory = Array.from(arg.Result);
     }
 
-    static init(mod: ModSDKModAPI, monitor: Monitor) {
+    static init(mod: ModSDKModAPI) {
         this.justLoaded = true;
 
-        monitor.AddIntervalEvent(20000, (player) => {
+        setInterval(() => {
             ServerSend("AccountQuery", { Query: "OnlineFriends" });
-        })
+        }, 20000);
 
         mod.hookFunction('DialogFindPlayer', 0, (args, next) => {
             if (args[0] === `NotificationTitle${this.EventType}`) {

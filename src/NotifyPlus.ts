@@ -1,5 +1,5 @@
 import bcMod from 'bondage-club-mod-sdk'
-import { Monitor } from 'bc-utilities';
+import { ChatRoomHandler } from 'bc-utilities';
 import { DataManager } from './Data/Data';
 import { CUSTOM_ACTION_TAG, GIT_REPO, ModName, ModVersion } from './Definition';
 import { GUISetting } from './GUI/GUI';
@@ -14,11 +14,11 @@ import { ChatRoomAction } from 'bc-utilities';
 
     let mod = bcMod.registerMod({ name: ModName, fullName: ModName, version: ModVersion, repository: GIT_REPO });
 
-    const monitor = new Monitor(200);
-
-    OnlineNotification.init(mod, monitor);
+    OnlineNotification.init(mod);
 
     MentionNotification.init(mod);
+
+    ChatRoomHandler.init(mod).then(MentionNotification.handler);
 
     ChatRoomAction.init(CUSTOM_ACTION_TAG);
 

@@ -1,21 +1,22 @@
 import { ModSDKModAPI } from "bondage-club-mod-sdk";
 import { DataManager } from "./Data/Data";
 import { GetText } from "./i18n";
+import { ChatRoomHandler } from "bc-utilities";
+
+const raiseNotify = (C: Character, content: string) => {
+    const data = DataManager.instance.data.chatNotify;
+    if (!C.IsPlayer()
+        && data.setting.AlertType !== 0
+        && !(document.hasFocus() && ElementIsScrolledToEnd("TextAreaChatLog")))
+        NotificationRaise(MentionNotification.EventType, {
+            body: content, character: C, useCharAsIcon: true
+        });
+}
 
 export class MentionNotification {
     static EventType = 'NotifyPlusChatMentioned';
     static CurrentSender: Character | undefined;
     static init(mod: ModSDKModAPI) {
-
-        const raiseNotify = (C: Character, content: string) => {
-            const data = DataManager.instance.data.chatNotify;
-            if (!C.IsPlayer()
-                && data.setting.AlertType !== 0
-                && !(document.hasFocus() && ElementIsScrolledToEnd("TextAreaChatLog")))
-                NotificationRaise(MentionNotification.EventType, {
-                    body: content, character: C, useCharAsIcon: true
-                });
-        }
 
         mod.hookFunction('DialogFindPlayer', 0, (args, next) => {
             if (args[0] === `NotificationTitle${this.EventType}`) {
@@ -24,41 +25,39 @@ export class MentionNotification {
             return next(args);
         });
 
-        mod.hookFunction('ChatRoomMessage', 9, (args, next) => {
+        mod.hookFunction('NotificationLoad', 0, (args, next) => {
             next(args);
-            const { Type, Content, Sender } = (args[0] as ServerChatRoomMessage);
-            if (!Player || !Player.MemberNumber || !Player.FriendList) return;
-            if (Sender === Player.MemberNumber) return;
-            const SenderCharacter = ChatRoomCharacter.find(_ => _.MemberNumber === Sender);
-            if (!SenderCharacter) return;
-            if (!['Chat', 'Emote'].includes(Type)) return;
+            NotificationEventHandlerSetup(this.EventType, DataManager.instance.data.chatNotify.setting);
+        });
+    }
 
+    static handler(handler: ChatRoomHandler) {
+        handler.onReceiveChatWhisperEmote((player, sender, msgSrc, type) => {
             const mentionSetting = DataManager.instance.data.chatNotify;
-            let msg = Content.toLowerCase();
+            const msg = msgSrc.toLowerCase();
+
+            const senderNumber = sender.MemberNumber;
+            const playerNumber = player.MemberNumber;
+            if (!playerNumber || !senderNumber) return;
 
             const doRaise = (() => {
-                if (Player.IsOwnedByMemberNumber(Sender)) {
+                if (player.IsOwnedByMemberNumber(senderNumber)) {
                     if (mentionSetting.dom.some(_ => msg.includes(_))) return true;
-                } else if (SenderCharacter.IsOwnedByMemberNumber(Player.MemberNumber)) {
+                } else if (sender.IsOwnedByMemberNumber(playerNumber)) {
                     if (mentionSetting.sub.some(_ => msg.includes(_))) return true;
                 }
 
-                if (SenderCharacter.IsLoverOfMemberNumber(Player.MemberNumber)) {
+                if (sender.IsLoverOfMemberNumber(playerNumber)) {
                     if (mentionSetting.lover.some(_ => msg.includes(_))) return true;
                 }
-                if (Player.FriendList?.includes(Sender)) {
+                if (player.FriendList?.includes(senderNumber)) {
                     if (mentionSetting.friend.some(_ => msg.includes(_))) return true;
                 }
                 if (mentionSetting.public.some(_ => msg.includes(_))) return true;
                 return false;
             })();
 
-            if (doRaise) raiseNotify(SenderCharacter, Content);
-        });
-
-        mod.hookFunction('NotificationLoad', 0, (args, next) => {
-            next(args);
-            NotificationEventHandlerSetup(this.EventType, DataManager.instance.data.chatNotify.setting);
+            if (doRaise) raiseNotify(sender, msgSrc);
         });
     }
 }
