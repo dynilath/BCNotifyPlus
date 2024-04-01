@@ -104,7 +104,7 @@ export class GUISetting {
         )
     }
 
-    hookGUI(mod: ModSDKModAPI<any>) {
+    hookGUI(mod: ModSDKModAPI) {
         mod.hookFunction("PreferenceSubscreenNotificationsRun", 10, (args, next) => {
             if (this._currentScreen) {
                 const origAlign = MainCanvas.textAlign;
