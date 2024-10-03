@@ -36,7 +36,10 @@ export class BCCheckbox extends AGUIItem {
     }
 
     Draw(hasFocus: boolean): void {
+        const oldAlign = MainCanvas.textAlign;
+        MainCanvas.textAlign = "left";
         DrawCheckbox(this.rect.x, this.rect.y, this.rect.width, this.rect.height, this.text, this.setting());
+        MainCanvas.textAlign = oldAlign;
     }
 
     Click(mouse: IPoint): void {
