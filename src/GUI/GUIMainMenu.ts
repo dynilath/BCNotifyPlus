@@ -13,6 +13,7 @@ import { OnlineNotifyMenu } from "./OnlineNotifyMenu";
 import { setSubscreen } from "./GUI";
 import { ExitButton, IconRoundButton, TextButton } from "./Widgets/Button";
 import { BCCheckbox, BCPreferenceNotifications } from "./Widgets/BCWrapper";
+import { TitleText } from "./Widgets/Text";
 
 const MainMenuBaseX = 300;
 const MainMenuBaseY = 200;
@@ -24,7 +25,6 @@ const NotifySettingHeight = 64;
 const SectionInternalPadding = 10;
 const SectionPadding = 50;
 
-const TitleText: IPoint = { x: MainMenuBaseX, y: 125 };
 const ChatNotifyButton: IRect = { x: MainMenuBaseX, y: MainMenuBaseY, width: MainButtonWidth, height: MainButtonHeight };
 const ChatNotifySetting: IPoint = { x: MainMenuBaseX, y: ChatNotifyButton.y + ChatNotifyButton.height + SectionInternalPadding };
 
@@ -43,6 +43,7 @@ export class MainMenu extends AGUIScreen {
     constructor() {
         super(null);
         this._items = [
+            new TitleText(),
             new ExitButton(() => this.Exit()),
             new TextButton(ChatNotifyButton, GetText(`button_mention_notify_setting`), () => setSubscreen(new ChatNotifyMenu(this))),
             new BCPreferenceNotifications(ChatNotifySetting, GetText(`chat_notify_notification_setting`),

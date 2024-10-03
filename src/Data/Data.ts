@@ -10,13 +10,14 @@ export class DataManager {
         if (this._instance === undefined)
             this._instance = new DataManager;
 
-        function LoadAndMessage(C: PlayerCharacter | null | undefined) {
+        function LoadAndMessage(C: Pick<PlayerCharacter, 'OnlineSettings' | 'ExtensionSettings'>) {
             DataManager.instance.ServerTakeData(C);
             if (msg) console.log(msg);
         }
 
         mod.hookFunction('LoginResponse', 0, (args, next) => {
-            LoadAndMessage(args[0]);
+            if (typeof args[0] !== 'object') return;
+            LoadAndMessage(args[0] as Pick<PlayerCharacter, 'OnlineSettings' | 'ExtensionSettings'>);
             next(args);
         });
 
@@ -48,6 +49,7 @@ export class DataManager {
         let d = LZString.decompressFromBase64(str);
         let data = {};
 
+        if (!d) return;
         try {
             let decoded = JSON.parse(d);
             data = decoded;
@@ -63,8 +65,7 @@ export class DataManager {
         }
     }
 
-    ServerTakeData(C: PlayerCharacter | null | undefined) {
-        if (!C) return;
+    ServerTakeData(C: Pick<PlayerCharacter, 'OnlineSettings' | 'ExtensionSettings'>) {
         const setting_data = C.ExtensionSettings[DataKeyName] || (C.OnlineSettings as any)[DataKeyName];
         this.DecodeDataStr(setting_data);
     }

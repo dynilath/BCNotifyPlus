@@ -9,7 +9,7 @@ function raiseOnlineNotify(name: string, id: number) {
     const data = DataManager.instance.data.onlineNotify;
     const content = GetText("notify_friend_online", { CHARANAME: name, CHARANUM: `${id}` });
     if (data.setting.AlertType !== 0) {
-        NotificationRaise(OnlineNotification.EventType, { body: content, memberNumber: id, characterName: name });
+        NotificationRaise(OnlineNotification.EventType as NotificationEventType, { body: content, memberNumber: id, characterName: name });
     }
     if (data.chatMsg) ChatRoomAction.instance.LocalAction(content);
 }
@@ -18,7 +18,7 @@ function raiseOfflineNotify(name: string, id: number) {
     const data = DataManager.instance.data.onlineNotify;
     const content = GetText("notify_friend_offline", { CHARANAME: name, CHARANUM: `${id}` });
     if (data.setting.AlertType !== 0) {
-        NotificationRaise(OnlineNotification.EventType, { body: content, memberNumber: id, characterName: name });
+        NotificationRaise(OnlineNotification.EventType as NotificationEventType, { body: content, memberNumber: id, characterName: name });
     }
     if (data.chatMsg) ChatRoomAction.instance.LocalAction(content);
 }
@@ -131,7 +131,7 @@ export class OnlineNotification {
 
         mod.hookFunction('NotificationLoad', 0, (args, next) => {
             next(args);
-            NotificationEventHandlerSetup(this.EventType, DataManager.instance.data.onlineNotify.setting);
+            NotificationEventHandlerSetup(this.EventType as NotificationEventType, DataManager.instance.data.onlineNotify.setting);
         });
     }
 }

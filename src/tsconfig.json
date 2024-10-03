@@ -10,5 +10,9 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
-  }
+  }, 
+  "include": [
+    "./**/*.ts",
+    "../node_modules/bc-stubs/bc/**/*.d.ts"
+  ]
 }

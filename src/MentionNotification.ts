@@ -8,7 +8,7 @@ const raiseNotify = (C: Character, content: string) => {
     if (!C.IsPlayer()
         && data.setting.AlertType !== 0
         && !(document.hasFocus() && ElementIsScrolledToEnd("TextAreaChatLog")))
-        NotificationRaise(MentionNotification.EventType, {
+        NotificationRaise(MentionNotification.EventType as NotificationEventType, {
             body: content, character: C, useCharAsIcon: true
         });
 }
@@ -27,7 +27,7 @@ export class MentionNotification {
 
         mod.hookFunction('NotificationLoad', 0, (args, next) => {
             next(args);
-            NotificationEventHandlerSetup(this.EventType, DataManager.instance.data.chatNotify.setting);
+            NotificationEventHandlerSetup(this.EventType as NotificationEventType, DataManager.instance.data.chatNotify.setting);
         });
     }
 

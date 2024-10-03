@@ -15,7 +15,10 @@ export class BCPreferenceNotifications extends AGUIItem {
     }
 
     Draw(hasFocus: boolean): void {
+        const oldAlign = MainCanvas.textAlign;
+        MainCanvas.textAlign = "left";
         PreferenceNotificationsDrawSetting(this.topLeft.x, this.topLeft.y, GetText(`chat_notify_notification_setting`), this.setting);
+        MainCanvas.textAlign = oldAlign;
     }
 
     Click(mouse: IPoint): void {
