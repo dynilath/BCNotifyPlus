@@ -16,12 +16,12 @@ export class DataManager {
         }
 
         mod.hookFunction('LoginResponse', 0, (args, next) => {
-            if (typeof args[0] !== 'object') return;
-            LoadAndMessage(args[0] as Pick<PlayerCharacter, 'OnlineSettings' | 'ExtensionSettings'>);
             next(args);
+            if (!Player || !Player.ExtensionSettings) return;
+            LoadAndMessage(Player as Pick<PlayerCharacter, 'OnlineSettings' | 'ExtensionSettings'>);
         });
 
-        if (Player && Player.MemberNumber) {
+        if (Player && Player.ExtensionSettings) {
             LoadAndMessage(Player);
         }
     }
