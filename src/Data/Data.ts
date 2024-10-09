@@ -3,6 +3,10 @@ import { DefaultValue } from "./Default";
 import { ValidateSetting } from "./Validate";
 import { DataKeyName } from "../Definition";
 
+function isAcountData(data: ServerLoginResponse): data is ServerAccountData {
+    return (data as ServerAccountData).MemberNumber !== undefined;
+}
+
 export class DataManager {
     private static _instance: DataManager | undefined;
 
@@ -16,12 +20,13 @@ export class DataManager {
         }
 
         mod.hookFunction('LoginResponse', 0, (args, next) => {
+            const [input] = args;
+            if (isAcountData(input))
+                LoadAndMessage(input as Pick<PlayerCharacter, 'OnlineSettings' | 'ExtensionSettings'>);
             next(args);
-            if (!Player || !Player.ExtensionSettings) return;
-            LoadAndMessage(Player as Pick<PlayerCharacter, 'OnlineSettings' | 'ExtensionSettings'>);
         });
 
-        if (Player && Player.ExtensionSettings) {
+        if (Player && Player.MemberNumber) {
             LoadAndMessage(Player);
         }
     }
