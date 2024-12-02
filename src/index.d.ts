@@ -41,9 +41,6 @@ type NotifyPlusPartialSetting = Partial<NotifyPlusSolidSetting>;
 
 type NotifyPlusModSetting = { BCNotifyPlusSetting?: string }
 
-declare function PreferenceNotificationsDrawSetting(Left: number, Top: number, Text: string, Setting: NotifyPlusBasicSetting);
-declare function PreferenceNotificationsClickSetting(Left: number, Top: number, Setting: NotifyPlusBasicSetting, EventType: string);
-
 interface Window {
     __load_flag__?: boolean;
 }

@@ -88,7 +88,12 @@ export class ChatNotifyMenu extends GUISettingScreen {
             return;
         }
 
-        PreferenceNotificationsClickSetting(titleBaseX, titleBaseY + 13, data.chatNotify.setting, MentionNotification.EventType);
+        PreferenceNotificationsClickSetting(
+          titleBaseX,
+          titleBaseY + 13,
+          data.chatNotify.setting,
+          MentionNotification.EventType as NotificationEventType
+        );
         DataManager.instance.ServerStoreData();
     }
 

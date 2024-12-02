@@ -13,6 +13,10 @@ import { ChatRoomAction } from 'bc-utilities';
     window.__load_flag__ = false;
 
     let mod = bcMod.registerMod({ name: ModName, fullName: ModName, version: ModVersion, repository: GIT_REPO });
+    
+    ChatRoomAction.init(CUSTOM_ACTION_TAG);
+
+    DataManager.init(mod, `${ModName} v${ModVersion} ready.`);
 
     OnlineNotification.init(mod);
 
@@ -20,11 +24,7 @@ import { ChatRoomAction } from 'bc-utilities';
 
     ChatRoomHandler.init(mod).then(MentionNotification.handler);
 
-    ChatRoomAction.init(CUSTOM_ACTION_TAG);
-
-    GUISetting.init(mod, () => new MainMenu);
-
-    DataManager.init(mod, `${ModName} v${ModVersion} ready.`);
+    GUISetting.init(mod, () => new MainMenu());
 
     window.__load_flag__ = true;
 

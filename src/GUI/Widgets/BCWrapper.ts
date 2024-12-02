@@ -24,7 +24,12 @@ export class BCPreferenceNotifications extends AGUIItem {
     Click(mouse: IPoint): void {
         if (WithinRect(mouse, { ...this.topLeft, width: 264, height: 64 })) {
             this.events?.before?.();
-            PreferenceNotificationsClickSetting(this.topLeft.x, this.topLeft.y, this.setting, this.EventType);
+            PreferenceNotificationsClickSetting(
+              this.topLeft.x,
+              this.topLeft.y,
+              this.setting,
+              this.EventType as NotificationEventType
+            );
             this.events?.after?.();
         }
     }

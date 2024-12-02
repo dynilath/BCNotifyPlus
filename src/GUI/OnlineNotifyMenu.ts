@@ -114,7 +114,12 @@ export class OnlineNotifyMenu extends GUISettingScreen {
         if (MouseIn(titleBaseX + divX * 3, titleBaseY + 100, 64, 64))
             data.onlineNotify.notifies.dom = !data.onlineNotify.notifies.dom;
 
-        PreferenceNotificationsClickSetting(titleBaseX, titleBaseY + 13, data.onlineNotify.setting, OnlineNotification.EventType);
+        PreferenceNotificationsClickSetting(
+          titleBaseX,
+          titleBaseY + 13,
+          data.onlineNotify.setting,
+          OnlineNotification.EventType as NotificationEventType
+        );
 
         const ItemPerPage = 5;
         const ContentLen = data.onlineNotify.notifies.spec.length;
