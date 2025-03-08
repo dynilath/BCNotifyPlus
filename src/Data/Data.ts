@@ -14,16 +14,16 @@ export class DataManager {
         if (this._instance === undefined)
             this._instance = new DataManager;
 
-        function LoadAndMessage(C: PlayerCharacter) {
+        function LoadAndMessage(C: Pick<PlayerCharacter, 'Name' | 'Nickname' | 'OnlineSettings' | 'ExtensionSettings'>) {
             DataManager.instance.ServerTakeData(C);
             if (msg) console.log(msg);
         }
 
         mod.hookFunction('LoginResponse', 0, (args, next) => {
-            next(args);
             const [input] = args;
             if (isAcountData(input))
-                LoadAndMessage(Player);
+                LoadAndMessage(input as Pick<PlayerCharacter, 'Name' | 'Nickname' | 'OnlineSettings' | 'ExtensionSettings'>);
+            next(args);
         });
 
         if (Player && Player.MemberNumber) {
