@@ -21,6 +21,7 @@ export class DataManager {
 
         mod.hookFunction('LoginResponse', 0, (args, next) => {
             const [input] = args;
+            // important: must load before original function, for the NotifySetting will be used in the original function
             if (isAcountData(input))
                 LoadAndMessage(input as Pick<PlayerCharacter, 'Name' | 'Nickname' | 'OnlineSettings' | 'ExtensionSettings'>);
             next(args);
