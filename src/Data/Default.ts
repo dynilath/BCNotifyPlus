@@ -1,11 +1,11 @@
-export function DefaultValue(): NotifyPlusSolidSetting {
+export function DefaultValue(nickname: string): NotifyPlusSolidSetting {
     return {
         chatNotify: {
             setting: {
                 AlertType: 0,
                 Audio: 0
             },
-            public: ["saki", "saotome", "saki saotome"],
+            public: nickname.split(" ").map((_: string) => _.toLowerCase()),
             friend: [],
             lover: ["dear", "treasure"],
             sub: ["master", "mistress"],

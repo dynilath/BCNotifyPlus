@@ -35,8 +35,8 @@ function IsV2Spec(d: any): d is NotifyPlusSpecV2 {
     return d !== undefined && typeof d.MemberNumber === 'number' && typeof d.enableOnline === 'boolean' && typeof d.enableOffline === 'boolean';
 }
 
-export function ValidateSetting(d: any): NotifyPlusSolidSetting {
-    let data = DefaultValue();
+export function ValidateSetting(d: any, fallback: ()=> NotifyPlusSolidSetting): NotifyPlusSolidSetting {
+    let data = fallback();
     if (d === undefined) return data;
     if (d.chatNotify !== undefined) {
         data.chatNotify.setting = PickNotifySetting(d.chatNotify);

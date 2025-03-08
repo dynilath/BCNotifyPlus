@@ -14,16 +14,16 @@ export class DataManager {
         if (this._instance === undefined)
             this._instance = new DataManager;
 
-        function LoadAndMessage(C: Pick<PlayerCharacter, 'OnlineSettings' | 'ExtensionSettings'>) {
+        function LoadAndMessage(C: PlayerCharacter) {
             DataManager.instance.ServerTakeData(C);
             if (msg) console.log(msg);
         }
 
         mod.hookFunction('LoginResponse', 0, (args, next) => {
+            next(args);
             const [input] = args;
             if (isAcountData(input))
-                LoadAndMessage(input as Pick<PlayerCharacter, 'OnlineSettings' | 'ExtensionSettings'>);
-            next(args);
+                LoadAndMessage(Player);
         });
 
         if (Player && Player.MemberNumber) {
@@ -45,9 +45,9 @@ export class DataManager {
         return LZString.compressToBase64(JSON.stringify(data));
     }
 
-    private DecodeDataStr(str: string | undefined) {
+    private DecodeDataStr(str: string | undefined, fallback: ()=> NotifyPlusSolidSetting) {
         if (str === undefined) {
-            Object.assign(this.modData, DefaultValue());
+            Object.assign(this.modData, fallback());
             return;
         }
 
@@ -60,7 +60,7 @@ export class DataManager {
             data = decoded;
         } catch { }
 
-        this.modData = ValidateSetting(data);
+        this.modData = ValidateSetting(data, fallback);
     }
 
     ServerStoreData() {
@@ -70,9 +70,9 @@ export class DataManager {
         }
     }
 
-    ServerTakeData(C: Pick<PlayerCharacter, 'OnlineSettings' | 'ExtensionSettings'>) {
+    ServerTakeData(C: Pick<PlayerCharacter, 'Name' | 'Nickname' | 'OnlineSettings' | 'ExtensionSettings'>) {
         const setting_data = C.ExtensionSettings[DataKeyName] || (C.OnlineSettings as any)[DataKeyName];
-        this.DecodeDataStr(setting_data);
+        this.DecodeDataStr(setting_data, () => DefaultValue(C.Nickname || C.Name));
     }
 
     get data() {
