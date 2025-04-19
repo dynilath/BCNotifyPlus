@@ -31,7 +31,7 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/core-js": "^2.5.8",
     "@types/node": "^20.17.19",
-    "bc-stubs": "^113.0.0",
+    "bc-stubs": "^115.0.0",
     "rollup": "^4.34.8",
     "rollup-plugin-cleanup": "^3.2.1",
     "rollup-plugin-copy": "^3.5.0",
