@@ -1,66 +1,66 @@
-import { ModSDKModAPI } from "bondage-club-mod-sdk";
-import { DataManager } from "./Data/Data";
-import { GetText } from "./i18n";
-import { ChatRoomHandler } from "bc-utilities";
-import { SetupNotificationHandler } from "./SetupHelper";
+import { DataManager } from './Data/Data';
+import { GetText } from './i18n';
+import { SetupNotificationHandler } from './SetupHelper';
+import { HookManager } from '@sugarch/bc-mod-hook-manager';
 
 const raiseNotify = (C: Character, content: string) => {
-  const data = DataManager.instance.data.chatNotify;
-  if (
-    !C.IsPlayer() &&
-    data.setting.AlertType !== 0 &&
-    !(document.hasFocus() && ElementIsScrolledToEnd("TextAreaChatLog"))
-  )
-    NotificationRaise(MentionNotification.EventType as NotificationEventType, {
-      body: content,
-      character: C,
-      useCharAsIcon: true,
-    });
+    const data = DataManager.instance.data.chatNotify;
+    if (
+        !C.IsPlayer() &&
+        data.setting.AlertType !== 0 &&
+        !(document.hasFocus() && ElementIsScrolledToEnd('TextAreaChatLog'))
+    )
+        NotificationRaise(MentionNotification.EventType as NotificationEventType, {
+            body: content,
+            character: C,
+            useCharAsIcon: true,
+        });
 };
 
 export class MentionNotification {
-  static EventType = "NotifyPlusChatMentioned";
-  static CurrentSender: Character | undefined;
-  static init(mod: ModSDKModAPI) {
-    mod.hookFunction("DialogFindPlayer", 0, (args, next) => {
-      if (args[0] === `NotificationTitle${this.EventType}`) {
-        return GetText("chat_notify_popup_title");
-      }
-      return next(args);
-    });
+    static EventType = 'NotifyPlusChatMentioned';
+    static CurrentSender: Character | undefined;
+    static init () {
+        HookManager.hookFunction('InterfaceTextGet', 0, (args, next) => {
+            if (args[0] === `NotificationTitle${this.EventType}`) {
+                return GetText('chat_notify_popup_title');
+            }
+            return next(args);
+        });
 
-    SetupNotificationHandler(mod, this.EventType, () =>
-      Promise.resolve(DataManager.instance.data.chatNotify.setting)
-    );
-  }
+        SetupNotificationHandler(this.EventType, () => Promise.resolve(DataManager.instance.data.chatNotify.setting));
+    }
 
-  static handler(handler: ChatRoomHandler) {
-    handler.onReceiveChatWhisperEmote((player, sender, msgSrc, type) => {
-      const mentionSetting = DataManager.instance.data.chatNotify;
-      const msg = msgSrc.toLowerCase();
+    static handler (data: ServerChatRoomMessage) {
+        const { Sender, Content } = data;
+        if(!Sender || Sender === Player.MemberNumber) return;
 
-      const senderNumber = sender.MemberNumber;
-      const playerNumber = player.MemberNumber;
-      if (!playerNumber || !senderNumber) return;
+        const senderC = ChatRoomCharacter.find(c=>c.MemberNumber === Sender);
+        if(!senderC) return;
 
-      const doRaise = (() => {
-        if (player.IsOwnedByMemberNumber(senderNumber)) {
-          if (mentionSetting.dom.some((_) => msg.includes(_))) return true;
-        } else if (sender.IsOwnedByMemberNumber(playerNumber)) {
-          if (mentionSetting.sub.some((_) => msg.includes(_))) return true;
-        }
+        const mentionSetting = DataManager.instance.data.chatNotify;
+            const loweredMsg = Content.toLowerCase();
 
-        if (sender.IsLoverOfMemberNumber(playerNumber)) {
-          if (mentionSetting.lover.some((_) => msg.includes(_))) return true;
-        }
-        if (player.FriendList?.includes(senderNumber)) {
-          if (mentionSetting.friend.some((_) => msg.includes(_))) return true;
-        }
-        if (mentionSetting.public.some((_) => msg.includes(_))) return true;
-        return false;
-      })();
+            const criteria = (t: string) => loweredMsg.includes(t) || Content.includes(t);
 
-      if (doRaise) raiseNotify(sender, msgSrc);
-    });
-  }
+
+            const doRaise = (() => {
+                if (Player.IsOwnedByMemberNumber(Sender)) {
+                    if (mentionSetting.dom.some(criteria)) return true;
+                } else if (senderC.IsOwnedByMemberNumber(Player.MemberNumber)) {
+                    if (mentionSetting.sub.some(criteria)) return true;
+                }
+
+                if (senderC.IsLoverOfMemberNumber(Player.MemberNumber)) {
+                    if (mentionSetting.lover.some(criteria)) return true;
+                }
+                if (Player.FriendList?.includes(Sender)) {
+                    if (mentionSetting.friend.some(criteria)) return true;
+                }
+                if (mentionSetting.public.some(criteria)) return true;
+                return false;
+            })();
+
+            if (doRaise) raiseNotify(senderC, Content);
+    }
 }
