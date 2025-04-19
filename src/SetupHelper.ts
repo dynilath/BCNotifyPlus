@@ -1,7 +1,6 @@
-import { ModSDKModAPI } from "bondage-club-mod-sdk";
+import { HookManager } from "@sugarch/bc-mod-hook-manager";
 
 export function SetupNotificationHandler(
-  mod: ModSDKModAPI,
   EventType: string,
   Setting: () => Promise<NotificationSetting>
 ) {
@@ -10,7 +9,7 @@ export function SetupNotificationHandler(
       NotificationEventHandlerSetup(EventType as NotificationEventType, setting)
     );
   } else {
-    mod.hookFunction("NotificationLoad", 0, (args, next) => {
+    HookManager.hookFunction("NotificationLoad", 0, (args, next) => {
       next(args);
       Setting().then((setting) =>
         NotificationEventHandlerSetup(

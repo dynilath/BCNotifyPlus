@@ -1,32 +1,25 @@
-import bcMod from 'bondage-club-mod-sdk'
-import { ChatRoomHandler } from 'bc-utilities';
 import { DataManager } from './Data/Data';
-import { CUSTOM_ACTION_TAG, GIT_REPO, ModName, ModVersion } from './Definition';
+import { GIT_REPO, ModName, ModVersion } from './Definition';
 import { GUISetting } from './GUI/GUI';
 import { MentionNotification } from './MentionNotification';
 import { OnlineNotification } from './OnlineNotification';
 import { MainMenu } from './GUI/GUIMainMenu';
-import { ChatRoomAction } from 'bc-utilities';
+import { once } from '@sugarch/bc-mod-utility';
+import { HookManager } from '@sugarch/bc-mod-hook-manager';
+import { ChatRoomMessageHandlerEvents } from '@sugarch/bc-event-handler';
 
-(function () {
+once(`${ModName}@${ModVersion}`, () => {
+    HookManager.init({ name: ModName, fullName: ModName, version: ModVersion, repository: GIT_REPO });
 
-    window.__load_flag__ = false;
+    DataManager.init(`${ModName} v${ModVersion} ready.`);
 
-    let mod = bcMod.registerMod({ name: ModName, fullName: ModName, version: ModVersion, repository: GIT_REPO });
-    
-    ChatRoomAction.init(CUSTOM_ACTION_TAG);
+    OnlineNotification.init();
 
-    DataManager.init(mod, `${ModName} v${ModVersion} ready.`);
+    MentionNotification.init();
 
-    OnlineNotification.init(mod);
+    ChatRoomMessageHandlerEvents.on('Chat', data => MentionNotification.handler(data));
+    ChatRoomMessageHandlerEvents.on('Whisper', data => MentionNotification.handler(data));
+    ChatRoomMessageHandlerEvents.on('Emote', data => MentionNotification.handler(data));
 
-    MentionNotification.init(mod);
-
-    ChatRoomHandler.init(mod).then(MentionNotification.handler);
-
-    GUISetting.init(mod, () => new MainMenu());
-
-    window.__load_flag__ = true;
-
-    console.log(`${ModName} v${ModVersion} loaded.`);
-})()
+    GUISetting.init(() => new MainMenu());
+});

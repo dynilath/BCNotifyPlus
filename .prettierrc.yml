@@ -1,0 +1,12 @@
+trailingComma: es5
+tabWidth: 4
+bracketSameLine: true
+semi: true
+printWidth: 120
+singleAttributePerLine: false
+quoteProps: "consistent"
+overrides:
+  - files: "*.yml"
+    options:
+      tabWidth: 2
+      singleQuote: true

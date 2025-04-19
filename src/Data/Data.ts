@@ -1,7 +1,7 @@
-import { ModSDKModAPI } from "bondage-club-mod-sdk";
 import { DefaultValue } from "./Default";
 import { ValidateSetting } from "./Validate";
 import { DataKeyName } from "../Definition";
+import { HookManager } from "@sugarch/bc-mod-hook-manager";
 
 function isAcountData(data: ServerLoginResponse): data is ServerAccountData {
     return (data as ServerAccountData).MemberNumber !== undefined;
@@ -10,7 +10,7 @@ function isAcountData(data: ServerLoginResponse): data is ServerAccountData {
 export class DataManager {
     private static _instance: DataManager | undefined;
 
-    static init(mod: ModSDKModAPI, msg?: string) {
+    static init(msg?: string) {
         if (this._instance === undefined)
             this._instance = new DataManager;
 
@@ -19,7 +19,7 @@ export class DataManager {
             if (msg) console.log(msg);
         }
 
-        mod.hookFunction('LoginResponse', 0, (args, next) => {
+        HookManager.hookFunction('LoginResponse', 0, (args, next) => {
             const [input] = args;
             // important: must load before original function, for the NotifySetting will be used in the original function
             if (isAcountData(input))

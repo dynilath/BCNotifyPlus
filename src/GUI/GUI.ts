@@ -1,7 +1,5 @@
-import { ModSDKModAPI } from "bondage-club-mod-sdk";
-import { DebugMode, ModName } from "../Definition";
+import { ModName } from "../Definition";
 import { GetText } from "../i18n";
-import { MouseInRect } from "./IGUI";
 import { IRect } from "./IGUI";
 
 export function getCurrentSubscreen(): GUISettingScreen | null {
@@ -43,11 +41,11 @@ export class GUISetting {
         this._currentScreen = subscreen;
     }
 
-    static init(mod: ModSDKModAPI, func: () => GUISettingScreen) {
-        GUISetting.instance = new GUISetting(mod, func);
+    static init(func: () => GUISettingScreen) {
+        GUISetting.instance = new GUISetting(func);
     }
 
-    constructor(mod: ModSDKModAPI, func: () => GUISettingScreen) {
+    constructor(func: () => GUISettingScreen) {
         this._mainScreenProvider = func;
         this.registerGUI();
     }

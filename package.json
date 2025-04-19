@@ -1,7 +1,7 @@
 {
   "name": "bc-notifyplus",
   "displayName": "BC Notify Plus",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "A notification improving script for bondage-club",
   "author": "Saki Saotome",
   "license": "MIT",
@@ -29,6 +29,9 @@
     "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
+    "@sugarch/bc-event-handler": "^0.6.1",
+    "@sugarch/bc-mod-hook-manager": "^0.2.14",
+    "@sugarch/bc-mod-utility": "^0.2.11",
     "@types/core-js": "^2.5.8",
     "@types/node": "^20.17.19",
     "bc-stubs": "^115.0.0",
