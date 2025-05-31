@@ -72,7 +72,10 @@ export class DataManager {
     }
 
     ServerTakeData(C: Pick<PlayerCharacter, 'Name' | 'Nickname' | 'OnlineSettings' | 'ExtensionSettings'>) {
-        const setting_data = C.ExtensionSettings[DataKeyName] || (C.OnlineSettings as any)[DataKeyName];
+        const setting_data = (()=>{
+            if(C.ExtensionSettings && typeof C.ExtensionSettings[DataKeyName] == "string") return C.ExtensionSettings[DataKeyName] as string;
+            return undefined; 
+        })();
         this.DecodeDataStr(setting_data, () => DefaultValue(C.Nickname || C.Name));
     }
 
