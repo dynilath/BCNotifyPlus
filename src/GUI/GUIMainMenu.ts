@@ -50,7 +50,7 @@ export class MainMenu extends AGUIScreen {
                 DataManager.instance.data.chatNotify.setting, MentionNotification.EventType,
                 { after: () => DataManager.instance.ServerStoreData() }),
             new TextButton(OnlineNotifyButton, GetText(`button_online_notify_setting`), () => setSubscreen(new OnlineNotifyMenu(this))),
-            new BCPreferenceNotifications(OnlineNotifySetting, GetText(`online_notify_notification_setting`),
+            new BCPreferenceNotifications(OnlineNotifySetting, GetText("online_notify_notification_setting"),
                 DataManager.instance.data.onlineNotify.setting, OnlineNotification.EventType,
                 { after: () => DataManager.instance.ServerStoreData() }),
             new BCCheckbox(ChatNotifyChatMsg, GetText("online_setting_chat_room_message"),

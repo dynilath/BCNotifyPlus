@@ -35,20 +35,8 @@ function raiseOfflineNotify (name: string, id: number) {
     }
     if (data.chatMsg) messager.localAction(content);
 }
-interface ServerAccountQueryResultItem {
-    MemberName: string;
-    MemberNumber: number;
-    ChatRoomName: string | null;
-    ChatRoomSpace: string | null;
-    Private?: boolean;
-    Type: 'Submissive' | 'Friend' | 'Lover';
-}
 
-interface ServerAccountQueryResult {
-    Result: ServerAccountQueryResultItem[];
-}
-
-function CompareNumberArray (cur: ServerAccountQueryResultItem[], prev: ServerAccountQueryResultItem[]) {
+function CompareNumberArray (cur: ServerFriendInfo[], prev: ServerFriendInfo[]) {
     let prevSet = new Set(prev.map(_ => _.MemberNumber));
     let curSet = new Set(cur.map(_ => _.MemberNumber));
     let removed = prev.filter(_ => !curSet.has(_.MemberNumber));
@@ -58,11 +46,11 @@ function CompareNumberArray (cur: ServerAccountQueryResultItem[], prev: ServerAc
 
 export class OnlineNotification {
     static EventType = 'NotifyPlusFriendOnline';
-    static onlineFriendMemory: ServerAccountQueryResultItem[] = [];
+    static onlineFriendMemory: ServerFriendInfo[] = [];
 
     static justLoaded: boolean = true;
 
-    static updateMemory (arg: ServerAccountQueryResult) {
+    static updateMemory (arg: ServerAccountQueryOnlineFriends) {
         this.onlineFriendMemory = Array.from(arg.Result);
     }
 
@@ -82,7 +70,8 @@ export class OnlineNotification {
 
         HookManager.hookFunction('ServerAccountQueryResult', 0, (args, next) => {
             next(args);
-            const arg = args[0] as ServerAccountQueryResult;
+            if(args[0].Query !== 'OnlineFriends') return;
+            const arg = args[0] as ServerAccountQueryOnlineFriends;
 
             if (this.justLoaded) {
                 this.justLoaded = false;
